@@ -176,7 +176,21 @@
             background: white;
             color: var(--primary-color);
         }
-        
+        #formSuccess {
+    display: none;
+    background: var(--primary-color);
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
         /* About Section */
         #about {
             padding: 100px 0;
@@ -975,24 +989,26 @@
                 </div>
             </div>
             
-            <div class="contact-form">
-                <form action="https://formspree.io/f/mwpbzyoq" method="POST">
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="name" placeholder="Your Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" class="form-control" name="_replyto" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="subject" placeholder="Subject">
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" name="message" placeholder="Your Message" required></textarea>
-                    </div>
-                    <button type="submit" class="btn">Send Message</button>
-                </form>
-            </div>
+          <div class="contact-form">
+    <form id="contactForm" action="https://formspree.io/f/mwpbzyoq" method="POST">
+        <div class="form-group">
+            <input type="text" class="form-control" name="name" placeholder="Your Name" required>
         </div>
+        <div class="form-group">
+            <input type="email" class="form-control" name="_replyto" placeholder="Your Email" required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" name="subject" placeholder="Subject">
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" name="message" placeholder="Your Message" required></textarea>
+        </div>
+        <button type="submit" class="btn">Send Message</button>
+    </form>
+    <div id="formSuccess" style="display: none; background: #4CAF50; color: white; padding: 15px; border-radius: 5px; margin-top: 20px;">
+        Thank you for your message! I'll get back to you soon.
+    </div>
+</div>
     </div>
 </section>
     <!-- Footer -->
@@ -1074,6 +1090,46 @@
                 }
             });
         });
+        // Form submission handler
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.textContent;
+    
+    // Change button text to indicate processing
+    submitButton.textContent = 'Sending...';
+    submitButton.disabled = true;
+    
+    fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Show success message
+            document.getElementById('formSuccess').style.display = 'block';
+            // Hide the form
+            form.style.display = 'none';
+            // Reset form fields
+            form.reset();
+        } else {
+            throw new Error('Network response was not ok');
+        }
+    })
+    .catch(error => {
+        alert('There was a problem sending your message. Please try again later.');
+        console.error('Error:', error);
+    })
+    .finally(() => {
+        // Reset button state
+        submitButton.textContent = originalButtonText;
+        submitButton.disabled = false;
+    });
+});
         
         // Update copyright year
         document.getElementById('year').textContent = new Date().getFullYear();
