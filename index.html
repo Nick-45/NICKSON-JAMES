@@ -1016,7 +1016,7 @@
             <p class="copyright">&copy; <span id="year"></span> Nickson James. All rights reserved.</p>
         </div>
     </footer>
-<script>
+    <script>
     // Mobile Navigation
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
@@ -1092,14 +1092,14 @@
     });
 
     // Contact Form Submission with Formspree
-    const contactForm = document.querySelector('.contact-form');
+    const contactForm = document.getElementById('contact-form'); // Changed to get form by ID
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
             // Get form values
-            const formData = new FormData(contactForm);
-            const submitButton = contactForm.querySelector('button[type="submit"]');
+            const formData = new FormData(this); // Use 'this' which refers to the form
+            const submitButton = this.querySelector('button[type="submit"]');
             const originalButtonText = submitButton.textContent;
             
             // Show loading state
@@ -1125,10 +1125,10 @@
                             Thank you for your message! I'll get back to you soon.
                         </div>
                     `;
-                    contactForm.appendChild(successMessage);
+                    this.appendChild(successMessage);
                     
                     // Reset form
-                    contactForm.reset();
+                    this.reset();
                     
                     // Remove success message after 5 seconds
                     setTimeout(() => {
@@ -1148,7 +1148,7 @@
                         There was a problem sending your message. Please try again later.
                     </div>
                 `;
-                contactForm.appendChild(errorMessage);
+                this.appendChild(errorMessage);
                 
                 // Remove error message after 5 seconds
                 setTimeout(() => {
