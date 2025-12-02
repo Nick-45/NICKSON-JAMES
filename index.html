@@ -186,6 +186,15 @@ Ni
     text-align: center;
     animation: fadeIn 0.5s ease-in-out;
 }
+#imageContainer {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+.project-img {
+    width: 200px;
+    height: auto;
+}
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
@@ -774,8 +783,14 @@ Ni
                             <span>Brand Guidelines</span>
                             <span>Print Materials</span>
                         </div>
-                        <a href="#" class="btn">View Project</a>
-                    </div>
+                        <a href="#" class="btn" id="viewProjectBtn">View Project</a>
+
+<div id="imageContainer" style="display:none;">
+    <img src="B1.png" class="project-img">
+    <img src="B2.png" class="project-img">
+    <img src="B3.png" class="project-img">
+    <img src="B4.png" class="project-img">
+</div>
                 </div>
                 
                 <!-- Portfolio Item 4 -->
@@ -1141,7 +1156,10 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
         submitButton.disabled = false;
     });
 });
-        
+        document.getElementById("viewProjectBtn").addEventListener("click", function(e){
+    e.preventDefault(); // prevents page from jumping to top
+    document.getElementById("imageContainer").style.display = "flex";
+});
         // Update copyright year
         document.getElementById('year').textContent = new Date().getFullYear();
         
